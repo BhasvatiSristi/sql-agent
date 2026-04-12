@@ -1,0 +1,33 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Local databases
+*.db
+*.sqlite3
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Editor/project metadata
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
