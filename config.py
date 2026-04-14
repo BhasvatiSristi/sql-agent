@@ -19,7 +19,7 @@ DB_PATH = "orders.db"
 # Good options (in order of capability):
 #   "mistral-large-latest"   → Best reasoning, best SQL accuracy (recommended)
 #   "mistral-small-latest"   → Faster and cheaper, good for testing
-MODEL_NAME = "mistral-large-latest"
+MODEL_NAME = "mistral-small-latest"
 
 # temperature=0 means fully deterministic — no creative guessing.
 # Always use 0 for SQL agents: we need precision, not creativity.
