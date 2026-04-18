@@ -199,10 +199,16 @@ def run_query(agent_executor: AgentExecutor, question: str) -> None:
     print(f"  QUESTION: {question}")
     print("═" * 62)
 
-    try:
-        result = agent_executor.invoke({"input": question})
-        sql_query = _extract_sql(result)
+    result = _execute_query(agent_executor, question)
 
+    if result["error"]:
+      print(f"\n  ERROR: {result['answer']}")
+      print("  Make sure your question is about the orders table.\n")
+      return
+
+    sql_query = result["sql"]
+
+    try:
         print("\n" + "─" * 62)
         if sql_query:
             print("  GENERATED SQL:")
@@ -212,7 +218,7 @@ def run_query(agent_executor: AgentExecutor, question: str) -> None:
             print("  GENERATED SQL:  (see verbose output above)")
         print("─" * 62)
         print("  FINAL ANSWER:")
-        print(f"  {result.get('output', 'No answer returned.')}")
+        print(f"  {result['answer']}")
         print("─" * 62 + "\n")
 
     except Exception as e:
@@ -237,31 +243,50 @@ def run_query_streamlit(agent_executor: AgentExecutor, question: str) -> dict:
             "error":    bool
         }
     """
+    result = _execute_query(agent_executor, question)
+    return {
+        "question": question,
+        "sql":      result["sql"],
+        "answer":   result["answer"],
+        "steps":    result["steps"],
+        "error":    result["error"],
+    }
+
+
+def _execute_query(agent_executor: AgentExecutor, question: str) -> dict:
+    """
+    Shared execution path for CLI and Streamlit.
+
+    Returns:
+        {
+            "sql": str | None,
+            "answer": str,
+            "steps": list of (tool_name, tool_input, observation),
+            "error": bool,
+        }
+    """
     try:
-        result = agent_executor.invoke({"input": question})
-        sql_query = _extract_sql(result)
+        raw_result = agent_executor.invoke({"input": question})
+        sql_query = _extract_sql(raw_result)
 
         steps = []
-        for action, observation in result.get("intermediate_steps", []):
-            tool_name  = getattr(action, "tool", "unknown")
+        for action, observation in raw_result.get("intermediate_steps", []):
+            tool_name = getattr(action, "tool", "unknown")
             tool_input = getattr(action, "tool_input", "")
             steps.append((tool_name, tool_input, observation))
 
         return {
-            "question": question,
-            "sql":      sql_query,
-            "answer":   result.get("output", "No answer returned."),
-            "steps":    steps,
-            "error":    False,
+            "sql": sql_query,
+            "answer": raw_result.get("output", "No answer returned."),
+            "steps": steps,
+            "error": False,
         }
-
     except Exception as e:
         return {
-            "question": question,
-            "sql":      None,
-            "answer":   f"Error: {str(e)}",
-            "steps":    [],
-            "error":    True,
+            "sql": None,
+            "answer": f"Error: {str(e)}",
+            "steps": [],
+            "error": True,
         }
 
 
@@ -291,48 +316,10 @@ def _extract_sql(result: dict) -> str | None:
 # STEP 6 — CLI entry point
 # ─────────────────────────────────────────────────────────────────────────────
 def main():
-    print("\n" + "═" * 62)
-    print("   AI SQL AGENT  —  LangChain + Mistral + SQLite")
-    print("   Database: orders.db  |  Table: orders")
-    print("═" * 62)
-    print("  Type a question in plain English.")
-    print("  Type 'exit' or 'quit' to stop.\n")
-    print("  Example queries:")
-    print("    › What is total revenue by city?")
-    print("    › Average delivery time for completed orders")
-    print("    › Top 5 food categories by revenue")
-    print("    › Which city has the highest average rating?")
-    print("    › How many orders were cancelled?")
-    print("═" * 62 + "\n")
+  """Backward-compatible entrypoint. CLI now lives in cli.py."""
+  from cli import main as cli_main
 
-    print("  Connecting to database...")
-    db = get_database()
-
-    print("  Loading LLM...")
-    llm = get_llm()
-
-    print("  Creating SQL tools...")
-    tools = get_tools(db, llm)
-
-    print("  Building agent...")
-    agent_executor = build_agent(llm, tools)   # Note: no db param needed now
-
-    print("  Ready.\n")
-
-    while True:
-        try:
-            user_input = input("Ask a question: ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\n  Goodbye!\n")
-            break
-
-        if not user_input:
-            continue
-        if user_input.lower() in ("exit", "quit", "q"):
-            print("\n  Goodbye!\n")
-            break
-
-        run_query(agent_executor, user_input)
+  cli_main()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
