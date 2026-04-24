@@ -31,7 +31,7 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CUSTOM CSS — dark terminal aesthetic
+# CUSTOM CSS — light theme with uniform example boxes
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -44,22 +44,22 @@ html, body, [class*="css"] {
 
 /* ── App background ── */
 .stApp {
-    background-color: #0d0f14;
-    color: #c8cdd8;
+    background-color: #f8f9fa;
+    color: #1f2937;
 }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background-color: #11131a;
-    border-right: 1px solid #1e2130;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
 }
 [data-testid="stSidebar"] * {
-    color: #8a90a0 !important;
+    color: #4b5563 !important;
 }
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: #c8cdd8 !important;
+    color: #1f2937 !important;
     font-family: 'IBM Plex Mono', monospace !important;
 }
 
@@ -68,40 +68,40 @@ html, body, [class*="css"] {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 1.6rem;
     font-weight: 600;
-    color: #e2e6f0;
+    color: #000000 !important;
     letter-spacing: -0.02em;
     padding: 1.2rem 0 0.2rem 0;
 }
 .main-subheader {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.78rem;
-    color: #4ade80;
+    color: #000000 !important;
     letter-spacing: 0.08em;
     margin-bottom: 1.8rem;
 }
 
 /* ── Chat messages ── */
 .user-bubble {
-    background: #1a1d27;
-    border: 1px solid #252836;
+    background: #e0e7ff;
+    border: 1px solid #c7d2fe;
     border-left: 3px solid #6366f1;
     border-radius: 4px 12px 12px 4px;
     padding: 0.9rem 1.2rem;
     margin: 1rem 0 0.4rem 0;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.95rem;
-    color: #dde1ec;
+    color: #1f2937;
 }
 .agent-bubble {
-    background: #141720;
-    border: 1px solid #1e2130;
-    border-left: 3px solid #4ade80;
+    background: #f0fdf4;
+    border: 1px solid #dcfce7;
+    border-left: 3px solid #22c55e;
     border-radius: 4px 12px 12px 4px;
     padding: 0.9rem 1.2rem;
     margin: 0.4rem 0 0.4rem 0;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.95rem;
-    color: #c8cdd8;
+    color: #1f2937;
 }
 .label-user {
     font-family: 'IBM Plex Mono', monospace;
@@ -114,7 +114,7 @@ html, body, [class*="css"] {
 .label-agent {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.68rem;
-    color: #4ade80;
+    color: #22c55e;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 0.35rem;
@@ -122,15 +122,15 @@ html, body, [class*="css"] {
 
 /* ── SQL block ── */
 .sql-block {
-    background: #0a0c10;
-    border: 1px solid #1e2130;
+    background: #fafaf9;
+    border: 1px solid #e7e5e4;
     border-top: 2px solid #6366f1;
     border-radius: 0 0 6px 6px;
     padding: 0.8rem 1rem;
     margin: 0.6rem 0 0 0;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.82rem;
-    color: #a5b4fc;
+    color: #6366f1;
     white-space: pre-wrap;
     word-break: break-word;
     line-height: 1.6;
@@ -151,23 +151,23 @@ html, body, [class*="css"] {
 .chip-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0.5rem 0 1.2rem 0;
+    gap: 0.75rem;
+    margin: 0.8rem 0 1rem 0;
 }
 .chip {
-    background: #1a1d27;
-    border: 1px solid #252836;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
     border-radius: 20px;
     padding: 0.3rem 0.8rem;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
-    color: #8a90a0;
+    color: #4b5563;
     cursor: pointer;
     transition: all 0.15s;
 }
 .chip:hover {
     border-color: #6366f1;
-    color: #a5b4fc;
+    color: #6366f1;
 }
 
 /* ── Status badge ── */
@@ -175,31 +175,31 @@ html, body, [class*="css"] {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: #0d2818;
-    border: 1px solid #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
     border-radius: 20px;
     padding: 0.25rem 0.75rem;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.7rem;
-    color: #4ade80;
+    color: #22c55e;
 }
 .status-err {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: #2a0a0a;
-    border: 1px solid #7f1d1d;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
     border-radius: 20px;
     padding: 0.25rem 0.75rem;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.7rem;
-    color: #f87171;
+    color: #ef4444;
 }
 
 /* ── Thinking steps ── */
 .step-block {
-    background: #0f1117;
-    border: 1px solid #1e2130;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
     border-radius: 6px;
     padding: 0.6rem 0.9rem;
     margin: 0.3rem 0;
@@ -209,57 +209,78 @@ html, body, [class*="css"] {
     line-height: 1.5;
 }
 .step-tool {
-    color: #fbbf24;
+    color: #d97706;
 }
 .step-obs {
-    color: #60a5fa;
+    color: #0284c7;
 }
 
 /* ── Divider ── */
 hr {
     border: none;
-    border-top: 1px solid #1e2130;
+    border-top: 1px solid #e5e7eb;
     margin: 1.5rem 0;
 }
 
 /* ── Input box ── */
 [data-testid="stTextInput"] input {
-    background: #141720 !important;
-    border: 1px solid #252836 !important;
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
     border-radius: 8px !important;
-    color: #e2e6f0 !important;
+    color: #1f2937 !important;
     font-family: 'IBM Plex Mono', monospace !important;
     font-size: 0.9rem !important;
     padding: 0.6rem 1rem !important;
 }
 [data-testid="stTextInput"] input:focus {
     border-color: #6366f1 !important;
-    box-shadow: 0 0 0 2px rgba(99,102,241,0.15) !important;
+    box-shadow: 0 0 0 2px rgba(99,102,241,0.1) !important;
 }
 [data-testid="stTextInput"] input::placeholder {
-    color: #3d4155 !important;
+    color: #9ca3af !important;
 }
 
 /* ── Button ── */
-.stButton > button {
-    background: #6366f1 !important;
-    color: #fff !important;
+button[data-testid="baseButton-secondary"],
+button[kind="primary"],
+.stButton button,
+.stButton > button,
+div[data-testid="stColumn"] button {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
     border: none !important;
     border-radius: 8px !important;
-    font-family: 'IBM Plex Mono', monospace !important;
-    font-size: 0.82rem !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
+    font-size: 0.85rem !important;
     font-weight: 500 !important;
-    padding: 0.55rem 1.4rem !important;
-    transition: background 0.15s !important;
+    padding: 0.6rem 1rem !important;
+    transition: all 0.15s !important;
+    min-height: 80px !important;
+    height: 80px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    line-height: 1.3 !important;
+    flex-wrap: wrap !important;
 }
-.stButton > button:hover {
-    background: #4f46e5 !important;
+button:hover,
+.stButton button:hover,
+.stButton > button:hover,
+button[kind="primary"]:hover,
+button[data-testid="baseButton-secondary"]:hover,
+div[data-testid="stColumn"] button:hover {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
 }
 
 /* ── Expander (thinking steps) ── */
 [data-testid="stExpander"] {
-    background: #0f1117 !important;
-    border: 1px solid #1e2130 !important;
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
     border-radius: 6px !important;
 }
 [data-testid="stExpander"] summary {
@@ -274,14 +295,14 @@ hr {
     overflow-y: auto;
     padding-right: 0.5rem;
     scrollbar-width: thin;
-    scrollbar-color: #1e2130 transparent;
+    scrollbar-color: #e5e7eb transparent;
 }
 
 /* ── Empty state ── */
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
-    color: #2d3145;
+    color: #d1d5db;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.85rem;
 }
@@ -293,8 +314,8 @@ hr {
 
 /* ── Metric cards in sidebar ── */
 .metric-card {
-    background: #0d0f14;
-    border: 1px solid #1e2130;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 0.7rem 0.9rem;
     margin: 0.4rem 0;
@@ -303,13 +324,47 @@ hr {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #a5b4fc;
+    color: #6366f1;
 }
 .metric-lbl {
     font-family: 'IBM Plex Sans', monospace;
     font-size: 0.72rem;
-    color: #4b5563;
+    color: #6b7280;
     margin-top: 0.1rem;
+}
+
+/* ── Example boxes wrapper ── */
+.example-boxes-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+/* ── Individual example box styling ── */
+.example-box {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    background: #ffffff;
+    border: 2px solid #6366f1;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.9rem;
+    color: #1f2937;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.example-box:hover {
+    background: #eef2ff;
+    border-color: #4f46e5;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -350,7 +405,7 @@ if "pending_query" not in st.session_state:
 # SIDEBAR
 # ─────────────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🗄️ SQL Agent")
+    st.markdown("# 🗄️ SQL Agent")
     st.markdown("---")
 
     # Connection status
@@ -440,11 +495,17 @@ EXAMPLES = [
 ]
 
 st.markdown("**Try an example:**")
-cols = st.columns(len(EXAMPLES))
-for i, (col, example) in enumerate(zip(cols, EXAMPLES)):
-    with col:
-        if st.button(example, key=f"chip_{i}", use_container_width=True):
+
+# Create uniform example boxes using columns
+cols = st.columns(3)  # 3 boxes per row for consistency
+for i, example in enumerate(EXAMPLES):
+    col_index = i % 3
+    with cols[col_index]:
+        if st.button(example, key=f"chip_{i}", use_container_width=True, help=f"Run: {example}"):
             st.session_state.pending_query = example
+    # Create new row after every 3 boxes
+    if (i + 1) % 3 == 0 and i < len(EXAMPLES) - 1:
+        cols = st.columns(3)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
