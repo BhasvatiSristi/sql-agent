@@ -7,7 +7,7 @@ A Python project that lets you ask business questions in plain English and get:
 
 It supports both:
 - a terminal interface (`cli.py`), and
-- a Streamlit web app (`app.py`).
+- a modern React + Tailwind web app (`frontend/`) powered by a FastAPI backend (`api.py`).
 
 The app is built around a SQLite database (`orders.db`) created from Uber Eats sales data (`data/ubereats_sales.csv`).
 
@@ -16,7 +16,7 @@ The app is built around a SQLite database (`orders.db`) created from Uber Eats s
 - Natural language to SQL using LangChain + Mistral
 - SQLite analytics on an `orders` table
 - Verbose agent reasoning/tool calls (for learning and debugging)
-- Streamlit chat UI with:
+- React + Tailwind chat UI with:
   - query history,
   - generated SQL display,
   - intermediate tool steps,
@@ -26,7 +26,9 @@ The app is built around a SQLite database (`orders.db`) created from Uber Eats s
 ## Project Structure
 
 - `agent.py`: Core agent pipeline (DB, LLM, tools, executor, query runners)
-- `app.py`: Streamlit frontend
+- `api.py`: FastAPI backend for the web UI
+- `frontend/`: React + Tailwind frontend (Vite)
+- `app.py`: Legacy Streamlit frontend
 - `cli.py`: Terminal interface
 - `config.py`: Central configuration (DB path, model, temperature, verbosity, env key check)
 - `prompts.py`: System prompt with schema + strict rules
@@ -115,7 +117,31 @@ Example questions:
 - Which city has the highest average rating?
 - How many orders were cancelled?
 
-### Option B: Streamlit App
+### Option B: React + Tailwind App (recommended)
+
+Start backend API:
+
+```bash
+uvicorn api:app --reload --port 8000
+```
+
+In a second terminal, start frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`.
+
+Optional: if your API is running on a different host/port, set:
+
+```bash
+VITE_API_BASE_URL=http://127.0.0.1:8000
+```
+
+### Option C: Legacy Streamlit App
 
 ```bash
 streamlit run app.py
@@ -163,6 +189,9 @@ These constraints significantly improve query reliability.
 - SQLAlchemy
 - pandas
 - Streamlit
+- FastAPI
+- React
+- Tailwind CSS
 - SQLite
 
 ## Notes for Development
