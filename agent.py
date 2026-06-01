@@ -1,14 +1,13 @@
 """
 agent.py
 ========
-The main file. This is the only file you need to understand deeply.
+Core agent pipeline.
 
-It does 5 things in order:
+It does 4 things in order:
   1. Connect to orders.db via LangChain's SQLDatabase wrapper
   2. Set up the LLM (Mistral, temperature=0)
   3. Create SQL tools via SQLDatabaseToolkit
   4. Build a tool-calling agent manually (Mistral-compatible)
-  5. Run a CLI loop so you can ask questions in plain English
 
 WHY WE BUILD THE AGENT MANUALLY (not create_sql_agent):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -187,52 +186,12 @@ def build_agent(llm: ChatMistralAI, tools: list) -> AgentExecutor:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 5 — Run one query and print the result (CLI)
-# ─────────────────────────────────────────────────────────────────────────────
-def run_query(agent_executor: AgentExecutor, question: str) -> None:
-    """
-    Sends the question to the agent and prints:
-      - The generated SQL query
-      - The final plain-English answer
-    """
-    print("\n" + "═" * 62)
-    print(f"  QUESTION: {question}")
-    print("═" * 62)
-
-    result = _execute_query(agent_executor, question)
-
-    if result["error"]:
-      print(f"\n  ERROR: {result['answer']}")
-      print("  Make sure your question is about the orders table.\n")
-      return
-
-    sql_query = result["sql"]
-
-    try:
-        print("\n" + "─" * 62)
-        if sql_query:
-            print("  GENERATED SQL:")
-            for line in sql_query.strip().splitlines():
-                print(f"    {line}")
-        else:
-            print("  GENERATED SQL:  (see verbose output above)")
-        print("─" * 62)
-        print("  FINAL ANSWER:")
-        print(f"  {result['answer']}")
-        print("─" * 62 + "\n")
-
-    except Exception as e:
-        print(f"\n  ERROR: {e}")
-        print("  Make sure your question is about the orders table.\n")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# STEP 5b — Streamlit-compatible runner (returns dict, no printing)
+# STEP 5 — API/frontend runner (returns dict, no printing)
 # ─────────────────────────────────────────────────────────────────────────────
 def run_query_streamlit(agent_executor: AgentExecutor, question: str) -> dict:
     """
-    Same logic as run_query() but returns a structured dict.
-    Used by app.py (Streamlit frontend).
+    Executes one natural-language analytics question and returns
+    a structured response for API/frontends.
 
     Returns:
         {
@@ -312,16 +271,3 @@ def _extract_sql(result: dict) -> str | None:
     return sql_query
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# STEP 6 — CLI entry point
-# ─────────────────────────────────────────────────────────────────────────────
-def main():
-  """Backward-compatible entrypoint. CLI now lives in cli.py."""
-  from cli import main as cli_main
-
-  cli_main()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-if __name__ == "__main__":
-    main()

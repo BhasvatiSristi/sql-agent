@@ -7,6 +7,5 @@ langchain-community==0.3.23
 langchain-mistralai==0.2.10
 langchainhub==0.1.21
 
-streamlit==1.45.0
 fastapi==0.115.12
 uvicorn[standard]==0.34.2

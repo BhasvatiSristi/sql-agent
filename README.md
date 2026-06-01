@@ -2,10 +2,9 @@
 
 AI SQL Agent is an end-to-end analytics assistant that converts natural language questions into SQL, executes them on SQLite, and returns business-friendly answers with reasoning traces.
 
-The project uses Uber Eats order data and supports three interfaces:
-- React + Tailwind web app (recommended)
+The project uses Uber Eats order data and is built around:
+- React + Tailwind web app
 - FastAPI backend API
-- CLI for terminal usage
 
 ## Key Features
 
@@ -37,8 +36,6 @@ The project uses Uber Eats order data and supports three interfaces:
 - agent.py: Core agent pipeline (DB, LLM, tools, executor, query runners)
 - api.py: FastAPI API layer for frontend integration
 - frontend/: React + Tailwind app (Vite)
-- cli.py: Terminal interface
-- app.py: Legacy Streamlit UI
 - config.py: Runtime configuration and API-key checks
 - prompts.py: System prompt and SQL guardrails
 - setup_db.py: CSV-to-SQLite loader
@@ -140,17 +137,7 @@ VITE_API_BASE_URL=http://127.0.0.1:8000
 
 ## Other Run Modes
 
-### CLI
-
-```bash
-python cli.py
-```
-
-### Legacy Streamlit UI
-
-```bash
-streamlit run app.py
-```
+No additional UI modes are included in this repository.
 
 ## Configuration
 
