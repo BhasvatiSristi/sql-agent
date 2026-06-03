@@ -9,26 +9,6 @@ It does 4 things in order:
   3. Create SQL tools via SQLDatabaseToolkit
   4. Build a tool-calling agent manually (Mistral-compatible)
 
-WHY WE BUILD THE AGENT MANUALLY (not create_sql_agent):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  create_sql_agent internally appends an extra assistant message at
-  the end of the prompt. Mistral's API strictly requires the LAST
-  message to be from the user or a tool — never the assistant.
-  This causes the 400 error: "Expected last role User or Tool".
-
-  The fix: build the agent ourselves using:
-    create_tool_calling_agent  → wires LLM + tools + a clean prompt
-    AgentExecutor              → runs the reasoning loop
-
-  We construct the prompt as:
-    [SystemMessage(SYSTEM_PROMPT),
-     HumanMessage("{input}"),
-     MessagesPlaceholder("agent_scratchpad")]
-
-  "agent_scratchpad" is where LangChain writes intermediate tool
-  calls and results — it always ends with a ToolMessage (user role),
-  so Mistral never sees an assistant message last. Problem solved.
-
 HOW THE AGENT REASONS:
 ━━━━━━━━━━━━━━━━━━━━━━
   The agent uses native tool-calling (structured JSON), not text parsing:
