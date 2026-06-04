@@ -72,9 +72,6 @@ def get_database() -> SQLDatabase:
 def get_llm() -> ChatMistralAI:
     """
     ChatMistralAI reads MISTRAL_API_KEY from the environment automatically.
-
-    temperature=0 → fully deterministic, same question = same SQL every time.
-    Always use 0 for SQL agents: precision over creativity.
     """
     return ChatMistralAI(
         model=MODEL_NAME,
@@ -93,10 +90,6 @@ def get_tools(db: SQLDatabase, llm: ChatMistralAI) -> list:
       sql_db_schema         → returns CREATE TABLE + sample rows
       sql_db_query_checker  → validates SQL before running (uses LLM)
       sql_db_query          → executes SQL and returns results
-
-    INTERVIEW POINT:
-      The agent never runs SQL directly — it calls tools which call
-      db.run(sql). Swap SQLite for Postgres by changing the URI only.
     """
     toolkit = SQLDatabaseToolkit(db=db, llm=llm)
     return toolkit.get_tools()
@@ -108,13 +101,6 @@ def get_tools(db: SQLDatabase, llm: ChatMistralAI) -> list:
 def build_agent(llm: ChatMistralAI, tools: list) -> AgentExecutor:
     """
     Builds the agent manually using create_tool_calling_agent.
-
-    WHY NOT create_sql_agent?
-      create_sql_agent appends an assistant message at the end of its
-      internal prompt. Mistral's API returns HTTP 400 if the last message
-      is from the assistant — it requires the conversation to end with a
-      user or tool message. Building the prompt ourselves gives us full
-      control over message ordering.
 
     THE PROMPT STRUCTURE:
       We use ChatPromptTemplate with exactly 3 slots:
@@ -168,7 +154,7 @@ def build_agent(llm: ChatMistralAI, tools: list) -> AgentExecutor:
 # ─────────────────────────────────────────────────────────────────────────────
 # STEP 5 — API/frontend runner (returns dict, no printing)
 # ─────────────────────────────────────────────────────────────────────────────
-def run_query_streamlit(agent_executor: AgentExecutor, question: str) -> dict:
+def _run_query(agent_executor: AgentExecutor, question: str) -> dict:
     """
     Executes one natural-language analytics question and returns
     a structured response for API/frontends.

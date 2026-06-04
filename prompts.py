@@ -2,19 +2,6 @@
 prompts.py
 ==========
 The system prompt is injected into the agent before every conversation.
-
-WHY THIS IS CRITICAL:
-  The LLM knows nothing about YOUR database by default.
-  This prompt gives it:
-    - Exact column names and types (prevents hallucination)
-    - Business rules (e.g. is_completed = 1 means success)
-    - What NOT to do (safety guardrails)
-    - Output format expectations
-
-INTERVIEW TIP:
-  Prompt engineering is a core production skill.
-  A precise system prompt is the difference between an agent that
-  works reliably and one that invents columns that don't exist.
 """
 
 SYSTEM_PROMPT = """

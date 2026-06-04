@@ -12,8 +12,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from agent import get_database, get_llm, get_tools, build_agent, run_query_streamlit
-
+from agent import get_database, get_llm, get_tools, build_agent, _run_query
 EXAMPLES = [
     "Total revenue by city",
     "Avg delivery time for completed orders",
@@ -65,5 +64,5 @@ def query(req: QueryRequest):
     if not question:
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
-    result = run_query_streamlit(get_agent_executor(), question)
+    result = _run_query(get_agent_executor(), question)
     return result
